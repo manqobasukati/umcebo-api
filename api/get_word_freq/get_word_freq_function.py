@@ -3,25 +3,23 @@ from nltk.probability import FreqDist
 from nltk.corpus import stopwords
 
 incoming_resp = [
-    {
-        "description": "i love banana very much",
-        "amount": 50
-    },
-    {
-        "description": "banana",
-        "amount": 20
-    },
-    {
-        "description": "chips",
-        "amount": 50
-    }
-]
-
-
+        {
+            "description": "i love banana very much",
+            "amount": 50
+        },
+        {
+            "description": "banana",
+            "amount": 20
+        },
+        {
+            "description": "chips",
+            "amount": 50
+        }
+    ]
 
 def convert_obj_to_sent(incoming_object):
     arr_of_sentences = []
-    for i in incoming_resp:
+    for i in incoming_object:
         arr_of_sentences.append(i["description"])
 
     sentence = ' '.join(map(str, arr_of_sentences))
@@ -41,10 +39,10 @@ def get_word_freq_function(**kwargs):
 
     fdist = FreqDist(filtered_words)
 
-    return fdist.most_common(3)
+    return get_total_amount(fdist.most_common(3),kwargs.get('incoming',None))
 
 def get_total_amount(tokens,obj):
-
+    
     token_infos = []
     for token in tokens:
         token_info = {
@@ -53,16 +51,17 @@ def get_total_amount(tokens,obj):
             "token_total_amount":0
         }
         for resp in obj:
-
+           
             if token[0] in resp["description"]:
                 token_info["token_total_amount"] = token_info["token_total_amount"]+  resp["amount"]
         token_infos.append(token_info)
 
-    print(token_infos)
+    return token_infos
+
+
+
        
 
-
-get_total_amount(get_word_freq_function(incoming=incoming_resp),incoming_resp)
 
 
 
