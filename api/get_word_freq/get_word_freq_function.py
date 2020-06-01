@@ -39,7 +39,7 @@ def get_word_freq_function(**kwargs):
 
     fdist = FreqDist(filtered_words)
 
-    return get_total_amount(fdist.most_common(3),kwargs.get('incoming',None))
+    return get_total_amount(fdist.most_common(5),kwargs.get('incoming',None))
 
 def get_total_amount(tokens,obj):
     
@@ -48,12 +48,14 @@ def get_total_amount(tokens,obj):
         token_info = {
             "token_name":token[0],
             "token_count":token[1],
+            "token_action":"",
             "token_total_amount":0
         }
         for resp in obj:
            
             if token[0] in resp["description"]:
                 token_info["token_total_amount"] = token_info["token_total_amount"]+  resp["amount"]
+                token_info["token_action"] = resp["action"]
         token_infos.append(token_info)
 
     return token_infos
